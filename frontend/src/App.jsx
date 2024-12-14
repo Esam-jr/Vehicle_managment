@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
+const apiurl = import.meta.env.VITE_API_URL;
 const App = () => {
   const [vehicles, setVehicles] = useState([]);
   const [showCreateForm, setShowCreateForm] = useState(false);
@@ -14,7 +15,7 @@ const App = () => {
 
   const fetchVehicles = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/vehicles");
+      const response = await axios.get(`${apiurl}/api/vehicles`);
       setVehicles(response.data);
     } catch (error) {
       console.error("Error fetching vehicles", error);
@@ -29,10 +30,7 @@ const App = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/vehicles",
-        newVehicle
-      );
+      const response = await axios.post(`${apiurl}/api/vehicles`, newVehicle);
       setVehicles([...vehicles, response.data]);
       setNewVehicle({ name: "", status: "" });
       setShowCreateForm(false);
@@ -43,10 +41,9 @@ const App = () => {
 
   const handleUpdateStatus = async (vehicleId) => {
     try {
-      const response = await axios.put(
-        `http://localhost:5000/api/vehicles/${vehicleId}`,
-        { status: editingStatus }
-      );
+      const response = await axios.put(`${apiurl}/api/vehicles/${vehicleId}`, {
+        status: editingStatus,
+      });
       setVehicles(
         vehicles.map((vehicle) =>
           vehicle._id === vehicleId
@@ -63,7 +60,7 @@ const App = () => {
 
   const handleDeleteVehicle = async (vehicleId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/vehicles/${vehicleId}`);
+      await axios.delete(`${apiurl}/api/vehicles/${vehicleId}`);
       setVehicles(vehicles.filter((vehicle) => vehicle._id !== vehicleId));
     } catch (error) {
       console.error("Error deleting vehicle", error);
