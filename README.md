@@ -1,4 +1,3 @@
-![Vehicle Management Dashboard](frontend/public/assets/Vehicle_managment.PNG)
 
 # Vehicle Management
 
